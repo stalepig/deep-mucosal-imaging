@@ -18,13 +18,13 @@ Because many of the scripts are written in Jython, the Jython interpreter includ
 # Installation
 The deep-mucosal-imaging project does not run as a separate executable. Rather, installation is as simple as copying the Java and Python (Jython) files into the plugins directoy of FIJI. For a typical installation on a Mac, these are the steps to install:
 
-1) Close and quit the FIJI program if it is running.
-2) Open the /Applications folder.
-3) Right click on FIJI and select "Show package contents."
-4) Select and open the /plugins folder.
-5) Create a new folder called /deep_mucosal_imaging (the underscores are essential).
-6) Copy the files from the GitHub /core and /hcs (if desired) into your newly created folder.
-7) Re-launch FIJI. The plugins should be available from the Plugins menu, under an expandable menu item called "deep mucosal imaging."
+1. Close and quit the FIJI program if it is running.
+2. Open the /Applications folder.
+3. Right click on FIJI and select "Show package contents."
+4. Select and open the /plugins folder.
+5. Create a new folder called /deep_mucosal_imaging (the underscores are essential).
+6. Copy the files from the GitHub /core and /hcs (if desired) into your newly created folder.
+7. Re-launch FIJI. The plugins should be available from the Plugins menu, under an expandable menu item called "deep mucosal imaging."
 
 # Citations
 If you find the deep-mucosal-imaging package to be useful in your work, you may cite a (hopefully) upcoming paper.
