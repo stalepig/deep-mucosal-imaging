@@ -14,3 +14,15 @@ Copies the scaling information from an image on disk to the open image.
 ## Typical Use
 You have stitched together an image from individual tiles, but you want to add the scaling information from those tiles so that you can put an accurate scale bar on the stitched image.
 
+---
+# Draw grid
+
+## Requirements
+* An open image on FIJI
+* Input of the number of rows and columns of the grid to draw
+
+## Returns
+* Irreversibly draws a grid of the specified size on the open image.
+
+## Typical Use
+You want to break apart a large image into manageable sections for manual analysis.
