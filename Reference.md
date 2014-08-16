@@ -37,7 +37,7 @@ The first step in breaking apart a tiled image that is too big to fit in RAM.
 
 ## Returns
 * A new directory is created in the directory of the input file.
-* The input image is broken into its tiles. Each tile is written as a separate OME-TIFF file to disk. The tiles are numbered sequentially as tile__{i}__.ome.tif where *i* is the tile number. Each tile contains all the color channels and z planes.
+* The input image is broken into its tiles. Each tile is written as a separate OME-TIFF file to disk. The tiles are numbered sequentially as tile_{i}_.ome.tif where *i* is the tile number. Each tile contains all the color channels and z planes.
 
 ## Typical Use
 You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
