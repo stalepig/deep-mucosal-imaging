@@ -16,6 +16,7 @@ You have stitched together an image from individual tiles, but you want to add t
 
 ---
 # Draw grid
+Draws a grid on an open image.
 
 ## Requirements
 * An open image on FIJI
@@ -26,3 +27,19 @@ You have stitched together an image from individual tiles, but you want to add t
 
 ## Typical Use
 You want to break apart a large image into manageable sections for manual analysis.
+
+---
+# Explode into tiles
+The first step in breaking apart a tiled image that is too big to fit in RAM.
+
+## Requirements
+* A tiled image on disk - only LSM files have been tested - representing a single timepoint but can have multiple color channels and z planes.
+
+## Returns
+* A new directory is created in the directory of the input file.
+* The input image is broken into its tiles. Each tile is written as a separate OME-TIFF file to disk. The tiles are numbered sequentially as tile__{i}__.ome.tif where *i* is the tile number. Each tile contains all the color channels and z planes.
+
+## Typical Use
+You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
+
+
