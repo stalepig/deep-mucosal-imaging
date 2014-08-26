@@ -74,4 +74,18 @@ The first step in breaking apart a tiled image that is too big to fit in RAM.
 ## Typical Use
 You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
 
+---
+# Remove bleedthrough
+
+## Requirements
+* Two open single-channel images in FIJI of the same XYZ dimensions.
+* Specification of which image serves as image to subtract bleedthrough from ("Main channel") and which image has the data that are bleeding through ("Subtracted channel").
+* Selection of a rectangular ROIs on the main channel that represent just the bleedthrough intensity and background (autofluorescence) intensity.
+* The best intensity ratio for image subtraction is automatically calculated, but manual adjustment is also an option.
+
+## Returns
+* Copies the main channel and presents a version with the bleedthrough subtracted throughout the full z-stack.
+
+## Typical Use
+A multichannel image is split into component channels using Image->Color->Split Channels, and this plugin is used to remove bleedthrough prior to recombining the channels.
 
