@@ -30,6 +30,22 @@ Copies the scaling information from an image on disk to the open image.
 You have stitched together an image from individual tiles, but you want to add the scaling information from those tiles so that you can put an accurate scale bar on the stitched image.
 
 ---
+# Downsample huge LSM
+
+## Requirements
+* An LSM or other Bio-format-readable image file that contains multiple tiles on disk.
+* Specification of which tiles to resize as well as the resizing scale. See "Batch_resizer" plugin for how to specify the resize scale.
+* Indication of how many tiles to hold in memory for resizing at one time. If the number is too high, FIJI may run out of memory.
+
+## Returns
+* Creates a new output directory in the image input directory.
+* Resizes each tile in the input image to the specified scale. See "Batch_resizer" plugin for how to specify the resize scale.
+* Writes each resized tile as a separate TIFF file to the output directory. 
+
+## Typical Use
+This plugin is an alternative to quickly generate resized tiles, instead of using "Explode_into_tiles" followed by "Batch_resizer". However, use of this plugin is not compatible with "Explore_full_resolution" and is for the most part deprecated.
+
+---
 # Draw grid
 Draws a grid on an open image.
 
@@ -53,6 +69,7 @@ The first step in breaking apart a tiled image that is too big to fit in RAM.
 ## Returns
 * A new directory is created in the directory of the input file.
 * The input image is broken into its tiles. Each tile is written as a separate OME-TIFF file to disk. The tiles are numbered sequentially as tile_{i}_.ome.tif where *{i}* is the tile number. Each tile contains all the color channels and z planes.
+* A metadata file indicating the number of channels and the tile configuration is written to the output directory.
 
 ## Typical Use
 You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
