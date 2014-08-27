@@ -31,6 +31,7 @@ You have stitched together an image from individual tiles, but you want to add t
 
 ---
 # Downsample huge LSM
+An alternative way to break down and resize multi-tile images.
 
 ## Requirements
 * An LSM or other Bio-format-readable image file that contains multiple tiles on disk.
@@ -75,7 +76,22 @@ The first step in breaking apart a tiled image that is too big to fit in RAM.
 You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
 
 ---
+# Normalize contrast on z
+Postprocessing way of adjusting contrast throughout the z levels in an image stack.
+
+## Requirements
+* An open image stack in FIJI.
+* Selection of mode: global or local. Global mode means that for each z slice, the intensities are independently normalized to a range such that a specified percentage of the pixels are saturated. Local means that for each z slice, intensities are adjusted using an adaptive histogram equalization (CLAHE) algorithm. In the local case, the saturation parameter in the numeric box does not matter, and the defaults in the FIJI version of CLAHE are used. 
+
+## Returns
+* A duplicated version of the image stack that has the adjusted intensities.
+
+## Typical Use
+Because pixel intensity degrades as one goes deeper into the z-stack, running this plugin will allow partial correction for this phenomenon. Note that this plugin can only fix intensity dropoff and cannot fix the gradual loss of resolution.
+
+---
 # Remove bleedthrough
+Performs compensation on fluorescence images.
 
 ## Requirements
 * Two open single-channel images in FIJI of the same XYZ dimensions.
