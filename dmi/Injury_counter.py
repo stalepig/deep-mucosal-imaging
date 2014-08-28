@@ -36,7 +36,8 @@ while stayinloop:
 		else:		
 			polygon = roi.getFloatPolygon()
 
-			if len(polygon.xpoints) % 2 == 0 and is_monotonic_increasing(polygon.ypoints):
+			# if len(polygon.xpoints) % 2 == 0 and is_monotonic_increasing(polygon.ypoints):
+			if is_monotonic_increasing(polygon.ypoints):
 				xset = average(polygon.xpoints)
 				IJ.setForegroundColor(255,255,0)
 				IJ.run("Draw","stack")

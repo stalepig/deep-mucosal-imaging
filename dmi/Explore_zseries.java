@@ -7,12 +7,12 @@ import ij.plugin.frame.*;
 import ij.plugin.filter.*;
 import ij.measure.*;
 
-public class Explore_timeseries implements PlugIn {
+public class Explore_zseries implements PlugIn {
 	
 	public void run(String arg) {
 		ImagePlus theImage = IJ.getImage();
 		boolean isQuit = false;
-		int numSlices = theImage.getNFrames();
+		int numSlices = theImage.getNSlices();
 		int i,j;
 		Analyzer analyte = new Analyzer(theImage);
 		ResultsTable rt = ResultsTable.getResultsTable();
@@ -45,7 +45,7 @@ public class Explore_timeseries implements PlugIn {
 				yresults = rt.getColumnAsDoubles(1);
 
 
-				pl = new Plot("Plot","Time","Intensity",xresults,yresults);
+				pl = new Plot("Plot","Z-Slice","Intensity",xresults,yresults);
 				pw = pl.show(); 
 			}
 		} while (isQuit == false);

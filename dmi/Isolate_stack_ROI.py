@@ -28,7 +28,7 @@ gd.showDialog()
 
 if (gd.wasOKed()):
 	## Selecting the ROI over the stack
-	startSlice = gd.getNextNumber()
+	startSlice = int(gd.getNextNumber())
 	endSlice = gd.getNextNumber()
 	width = theImage.getWidth()
 	height = theImage.getHeight()
@@ -61,7 +61,7 @@ if (gd.wasOKed()):
 		for i in range(startSlice,endSlice+1):
 			procImage.setSliceWithoutUpdate(i)
 			bp = procImage.getProcessor().duplicate()
-			bp.fillOutside(roiArray[i-1])
+			bp.fillOutside(roiArray[i-startSlice])
 			ns.addSlice(bp)
 		castImages.append(ImagePlus(procImage.getShortTitle()+"_cast",ns))
 
