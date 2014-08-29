@@ -105,3 +105,30 @@ Performs compensation on fluorescence images.
 ## Typical Use
 A multichannel image is split into component channels using Image->Color->Split Channels, and this plugin is used to remove bleedthrough prior to recombining the channels.
 
+---
+# Shine light
+Automatically adjusts contrast over z-stack in the selected region-of-interest (ROI).
+
+## Requirements
+* An open single-channel z-stack in FIJI.
+
+## Returns
+* User interface allows for repetitive selection of an ROI in the open image.
+* A duplicate image stack is made from the ROI only, and then Normalize_contrast_on_z is run with the global option on the duplicate image.
+
+## Typical Use
+There is a dark portion in the image that has a feature that needs closer examination. This plugin enables the brightening of that feature.
+
+---
+# Stretch stack on z
+Takes an image stack consisting of n slices and converts it to an image stack of sn slices, where s is a natural number.
+
+## Requirements
+* An open single-channel z-stack in FIJI.
+* Specification of s, the multiplier for the stack expansion.
+
+## Returns
+* Duplicates each slice in the input stack by s times and returns the stretched stack as a duplicate image.
+
+## Typical Use
+This is useful prior to 3D visualization so that the rendering does not produce a smushed version of the crypt. It does not improve z-resolution; however, it can provide a more-proportional representation of the shape of the object.
