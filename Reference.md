@@ -1,6 +1,21 @@
 Plugin reference for deep-mucosal-imaging
 =========================================
 
+# Annotate ROI
+Allows placement of ROIs on image with manual annotations.
+
+## Requirements
+* An open image on FIJI.
+* Specification of the number of annotations to add per ROI.
+
+## Returns
+* Use the multi-point ROI chooser to mark ROIs. After placing each mark, a dialog box will pop up where annotations (text or number) can be entered.
+* After exiting the main control sequence of the plugin, the list of ROIs and their annotations will be sent to the Results window, from which it can be saved.
+
+## Typical Use
+For example, you can use this plugin to mark crypts and annotate their position relative to other crypts or their clonal status. Because the dialog box where you enter annotations is modal, it is best to know what you will enter before you select an individual point ROI (because the image window is locked while the dialog box is up).
+
+---
 # Batch resizer
 Resizes individual image tiles.
 
@@ -14,6 +29,21 @@ Resizes individual image tiles.
 
 ## Typical Use
 This step is performed after breaking the source image into tiles but right before the stitching process, to prevent FIJI from running out of memory during the sstitching procedure.
+
+---
+# Clone counter
+An ROI picker that allows dividing of consecutively picked ROIs into distinct classes or categories.
+
+## Requirements
+* An open image in FIJI.
+
+## Returns
+* ROIs are selected with a user interface using the multi-point tool.
+* After selecting a certain number of ROIs, you can mark whether the last n ROIs belong to the same class, where n equals the number of ROIs selected from the end of the last ROI class.
+* ROIs are saved as a CSV file with their position and class number.
+
+## Typical Use
+Clone counter is good for counting the number of colonic crypts that are thought to have originated from a single crypt (clonal succession). Each crypt is marked by the multi-point picker, and once you have finished marking the entire clone, you click the "Finalize clone" button to advance to marking the crypts of the next clone.
 
 ---
 # Copy scale info
