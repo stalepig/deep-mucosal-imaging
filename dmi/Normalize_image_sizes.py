@@ -33,11 +33,17 @@ if dirPath is not None:
 				params = "x=" + str(scale_factor) + " y=" + str(scale_factor) + " z=1.0 interpolation=Bilinear average process create title=doggie"
 				IJ.run(theImage,"Scale...",params)
 				saveImage = WindowManager.getImage("doggie")
+				pixelWidth = saveImage.getCalibration().pixelWidth
+				pixelHeight = saveImage.getCalibration().pixelHeight
+				pixelDepth = saveImage.getCalibration().pixelDepth
 				if convert_to_rgb:
 					old_saveImage = saveImage
 					old_saveImage.changes = False
 					saveImage = old_saveImage.flatten()
 					old_saveImage.close()
+				saveImage.getCalibration().pixelWidth = pixelWidth
+				saveImage.getCalibration().pixelHeight = pixelHeight
+				saveImage.getCalibration().pixelDepth = pixelDepth
 				IJ.saveAsTiff(saveImage,dirPath+"resized/"+bname2+".tif")
 				theImage.close()
 				saveImage.close()

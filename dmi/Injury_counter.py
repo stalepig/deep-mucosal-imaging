@@ -14,7 +14,7 @@ def is_monotonic_increasing(pts):
 		
 theImage = IJ.getImage()
 stayinloop = True
-IJ.run("RGB Color")
+# IJ.run("RGB Color")
 
 injuryfirst = True
 injuryLengths = []

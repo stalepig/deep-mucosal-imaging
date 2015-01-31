@@ -30,6 +30,8 @@ public class Combine_image_sequence implements PlugIn {
 		GenericDialog gd = new GenericDialog("Settings");
 		gd.addChoice("Active stack:",titles,titles[0]);
 		gd.addNumericField("Number of channels:",5,0);
+		gd.addStringField("File label:","IMGid");
+		gd.addCheckbox("Close images on exit?",false);
 		gd.showDialog();
 
 		if (gd.wasCanceled()) { return; }
@@ -37,7 +39,9 @@ public class Combine_image_sequence implements PlugIn {
 		int activeStack = gd.getNextChoiceIndex();
 		int numChannels = (int) gd.getNextNumber();
 		ImagePlus img = WindowManager.getImage(wList[activeStack]);
-		String baseTitle = img.getTitle();
+		String baseTitle = gd.getNextString();
+		if (baseTitle == null || baseTitle=="") baseTitle = "IMG";
+		boolean doCloseImgs = gd.getNextBoolean();
 		int numSlices = img.getNSlices();
 
 		for (i=1;i<=numChannels;i++) {
@@ -57,10 +61,12 @@ public class Combine_image_sequence implements PlugIn {
 			imp = WindowManager.getImage(wList[i]);
 			IJ.save(imp,saveDir+"/"+baseTitle+"_ch"+String.valueOf(i+1)+".tif");
 		}
-		
-		for (i=0;i<wList.length;i++) {
-			imp = WindowManager.getImage(wList[i]);
-			imp.close();
+
+		if (doCloseImgs) {
+			for (i=0;i<wList.length;i++) {
+				imp = WindowManager.getImage(wList[i]);
+				imp.close();
+			}
 		}
 	}
 }
