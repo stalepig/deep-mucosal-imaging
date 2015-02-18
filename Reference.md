@@ -31,6 +31,10 @@ Resizes individual image tiles.
 This step is performed after breaking the source image into tiles but right before the stitching process, to prevent FIJI from running out of memory during the sstitching procedure.
 
 ---
+# Batch stitch
+
+
+---
 # Clone counter
 An ROI picker that allows dividing of consecutively picked ROIs into distinct classes or categories.
 
@@ -44,6 +48,20 @@ An ROI picker that allows dividing of consecutively picked ROIs into distinct cl
 
 ## Typical Use
 Clone counter is good for counting the number of colonic crypts that are thought to have originated from a single crypt (clonal succession). Each crypt is marked by the multi-point picker, and once you have finished marking the entire clone, you click the "Finalize clone" button to advance to marking the crypts of the next clone.
+
+---
+# Combine image sequence
+Simplifies combining the output of stitching into a multichannel image for easy viewing.
+
+## Requirements
+* A directory of images where each image represents the stitched z-plane of a single color channel. This image sequence is the typical output of the "Stitch_wrapper" plugin, which wraps Stephan Preibisch wounderful Fourier stitching plugin for simplicity.
+
+## Returns
+* All the images in the image sequence directory are imported and sorted based on the number of channels.
+* The user provides a file prefix title and a directory where the merged TIFF files can be saved.
+
+## Typical Use
+After stitching the downsampled DMI image tiles, the image sequence has to be combined into a merged TIFF file to simplify exploration of the image over the various z-planes and color channels.
 
 ---
 # Copy scale info
@@ -106,6 +124,51 @@ The first step in breaking apart a tiled image that is too big to fit in RAM.
 You have just acquired your gigantic image and want to begin the process of stitching and analyzing it. 
 
 ---
+# Explore full resolution
+Allows the user to pick an area on a downsampled image produced through DMI and retrieve the local tiles stitched at high (original or acquisition) resolution.
+
+## Requirements
+* A downsampled (scaled) image, opened in FIJI, produced via "Explode_into_tiles", "Batch_resizer", and "Stitch_wrapper" plugins of the DMI package.
+* A directory of full-szied OME TIFF files that each correspond to a tile of the original image, produced by "Explode_into_tiles".
+* A metadata file of the tile scan produced by "Explode_into_tiles" called tile_info.txt that is placed in the same directory as the individual full-resolution tile files.
+
+## Returns
+* This plugin draws a grid on the downsampled active image that indicates where the tile boundaries are located.
+* Using the rectangular ROI tool of FIJI/ImageJ, the user can select a region for closer inspection at higher resolution.
+* This plugin will stitch the original region together, provided there is enough RAM (that is, the selected region is sufficiently small). The stitched high-resolution image will be rendered on the screen.
+* The user can repetitively choose different regions for inspection.
+* The selected tiles used for stitching, as well as the stitched output, is stored in a temp directory in the master directory containing the tiles.
+
+## Typical Use
+You have a stitched, downsampled overview image of your sample produced by DMI. You want to analyze a small region at higher resolution; this will be the plugin that allows you to do this to spare you from having to manually calculate which tile corresponds to your region-of-interest.
+
+---
+# Explore z series
+
+---
+# Injury counter
+
+---
+# Injury counter 2
+
+
+---
+# Isolate stack ROI
+Isolate a feature within a stack without doing further processing.
+
+## Requirements
+* An open image stack in FIJI, can be multi-channel.
+
+## Returns
+* User interface asks for a slice range.
+* If image is multi-channel, plugin asks for a source image, which is the reference image used to pick an ROI through the stack.
+* For each slice within range, user can select a rectangular, ellipse, or freehand ROI.
+* Plugin produces an image with the features within the ROI shown and the non-ROI areas in black.
+
+## Typical Use
+You just want to isolate a particular crypt within an image, but you cannot use the ImageJ ROI feature by itself because the crypt is not straight vertical through the stack. This plugin alows you to move the ROI with the crypt (or other feature) throughout the stack, so when you do the 3D reconstruction, other crypts do not get in the way.
+ 
+---
 # Normalize contrast on z
 Postprocessing way of adjusting contrast throughout the z levels in an image stack.
 
@@ -118,6 +181,9 @@ Postprocessing way of adjusting contrast throughout the z levels in an image sta
 
 ## Typical Use
 Because pixel intensity degrades as one goes deeper into the z-stack, running this plugin will allow partial correction for this phenomenon. Note that this plugin can only fix intensity dropoff and cannot fix the gradual loss of resolution.
+
+---
+# Normalize image sizes
 
 ---
 # Remove bleedthrough
@@ -136,6 +202,37 @@ Performs compensation on fluorescence images.
 A multichannel image is split into component channels using Image->Color->Split Channels, and this plugin is used to remove bleedthrough prior to recombining the channels.
 
 ---
+# Set cast
+Enables manual tracing of a feature throughout a z-stack, slice by slice.
+
+## Requirements
+* A single-channel z-stack image open in FIJI.
+
+## Returns
+* User interface asks to select a range of slices over which to define a region of interest.
+* The plugin iterates over each slice within this range, asking user to outline the region using the ellipse, rectangular, or freehand ROI tool of ImageJ.
+* At the end of the slice range, a new image with the ROIs isolated by gray values is produced.
+
+## Typical Use
+Suppose the user wants to highlight an individual crypt within a field of crypts; this plugin allows tracing of the crypt and subsequent 3D reconstruction.
+ 
+---
+# Set cast by threshold
+Automatic highlighting of a feature identified by pixel value throughout a z-stack.
+
+## Requirements
+* A single-channel z-stack image open in FIJI.
+
+## Returns
+* User interface asks for a slice range.
+* For each slice within range, user selects an ROI using the rectangular, ellipse, or freehand ROI tool.
+* User selects a threshold value (1-254); any pixels above this value within the ROI will be saved. User can adjust threshold over each slice.
+* A z-stack of saved pixels is created at the end of the slice sequence.
+
+## Typical Use
+Suppose the user wants to highlight a crypt within a field of crypts, and the crypt needs to be outlined using some kind of label (for example, highlighting a crypt by its labeled nuclei).
+
+---
 # Shine light
 Automatically adjusts contrast over z-stack in the selected region-of-interest (ROI).
 
@@ -150,6 +247,10 @@ Automatically adjusts contrast over z-stack in the selected region-of-interest (
 There is a dark portion in the image that has a feature that needs closer examination. This plugin enables the brightening of that feature.
 
 ---
+# Stitch wrapper
+
+
+---
 # Stretch stack on z
 Takes an image stack consisting of n slices and converts it to an image stack of sn slices, where s is a natural number.
 
@@ -162,3 +263,6 @@ Takes an image stack consisting of n slices and converts it to an image stack of
 
 ## Typical Use
 This is useful prior to 3D visualization so that the rendering does not produce a smushed version of the crypt. It does not improve z-resolution; however, it can provide a more-proportional representation of the shape of the object.
+
+----
+# Subtract local background over z fast

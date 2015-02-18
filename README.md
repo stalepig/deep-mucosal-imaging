@@ -4,10 +4,10 @@ deep-mucosal-imaging
 Convenience plugins for FIJI/ImageJ to reconstruct, explore, and analyze extended imaging volumes of colon
 
 # Status
-The routines that form the deep-mucosal-imaging project are still in pre-alpha phase, meaning they have not been tested on a wide range of systems or input files, nor have they been debugged for various configurations of user input outside what the initial programmer may idiosyncratically use. That being said, the routines in themselves are unlikely to cause severe data loss because they are based on a stable release of FIJI.
+The routines that form the deep-mucosal-imaging project have been used on a Mac installation of FIJI analyzing LSM images captured using a Zeiss LSM700 confocal microscope (running the Zen software). The routines have not been tested on other types of systems, but the code should be platform-independent. Please communicate your experience with using these plugins, especially any bugs that you encounter so that the software can be improved and be better utilized. Feel free to write in for advice or guidance when using this software.
 
 # Development
-The deep-mucosal-imaging project currently has 1 programmer (Cambrian Liu) who authored the initial versions of the plugins. Most current work is still focused on adding features through additional plugins, rather than debugging and refining existing plugins. A full documentation of existing plugins is forthcoming. You are welcome to suggest changes or extensions, report bugs, and/or contribute directly to the programming on the project. Please contact Cambrian Liu at camliu@chla.usc.edu for all correspondence relating to this software. 
+The deep-mucosal-imaging project currently has 1 programmer (Cambrian Liu) who authored the initial versions of the plugins. Most current work is still focused on adding features through additional plugins, rather than debugging and refining existing plugins. A preliminary documentation of existing plugins is available and is continually updated. You are welcome to suggest changes or extensions, report bugs, and/or contribute directly to the programming on the project. Please contact Cambrian Liu at camliu@chla.usc.edu for all correspondence relating to this software. 
 
 # Organization
 The /dmi directory contains the main plugins to be used in analyzing large microscopy images. 
