@@ -42,6 +42,8 @@ if not(sourceDir is None):
 	print mem_recs
 	for i in range(0,len(mem_recs)):
 		ratio_rec = float(mem_recs[i]) / dirSizeMB
+		if (ratio_rec > 1):
+			ratio_rec = 1
 		print ratio_rec
 		ratio_rec_str = "%.3f" % ratio_rec
 		gd.addMessage(str(i+1)+"-channel: " + str(mem_recs[i]) + "MB; Ratio: " + ratio_rec_str)
