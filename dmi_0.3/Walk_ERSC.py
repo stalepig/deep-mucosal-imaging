@@ -175,6 +175,13 @@ def run_combine(filePath):
 							" c2=" + WindowManager.getImage(wList[2]).getTitle() +
 							" c3=" + WindowManager.getImage(wList[0]).getTitle() +
 							" c4=" + WindowManager.getImage(wList[3]).getTitle() + " create ignore")
+				elif nChannels == 5:
+					params = ("c1=" + WindowManager.getImage(wList[1]).getTitle() +
+							" c2=" + WindowManager.getImage(wList[2]).getTitle() +
+							" c3=" + WindowManager.getImage(wList[0]).getTitle() +
+							" c4=" + WindowManager.getImage(wList[4]).getTitle() + 
+							" c7=" + WindowManager.getImage(wList[3]).getTitle() +
+							" create ignore")
 				else:
 					IJ.log("No composite image created due to excess channels (>4)")
 				IJ.run("Merge Channels...", params)

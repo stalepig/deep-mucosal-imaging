@@ -4,78 +4,62 @@ from ij import WindowManager
 from ij.gui import WaitForUserDialog
 from ij import ImageStack
 from ij import ImagePlus
+from ij.process import ByteProcessor
+from ij.plugin import ImageCalculator
 
 theImage = IJ.getImage()
 
-sourceImages = []
-if theImage.getNChannels() == 1:
-	IJ.run("8-bit")
-	sourceImages.append(theImage)
-else:
-	sourceImages = ChannelSplitter.split(theImage)
-	sourceNames = []
-	for im in sourceImages:
-		im.show()
-		sourceNames.append(im.getTitle())
-	gd0 = NonBlockingGenericDialog("Select source image...")
-	gd0.addChoice("Source image",sourceNames,sourceNames[0])
-	gd0.showDialog()
-	if (gd0.wasOKed()):
-		chosenImage = gd0.getNextChoice()
-		theImage = WindowManager.getImage(chosenImage)
-		IJ.selectWindow(chosenImage)
-	else:
-		theImage = sourceImages[0]
-		IJ.selectWindow(sourceNames[0])
-	
-gd = NonBlockingGenericDialog("Set slice params...")
-gd.addNumericField("Slice start:",1,0)
-gd.addNumericField("Slice end:",theImage.getNSlices(),0)
-gd.showDialog()
+if theImage.getNSlices() > 1:
+	iStack = ImageStack(theImage.getWidth(),theImage.getHeight())
+	for sl in range(theImage.getNSlices()):
+		sliceIp = ByteProcessor(theImage.getWidth(),theImage.getHeight())
+		iStack.addSlice(sliceIp)
+	maskImage = ImagePlus("maskImage",iStack)
 
-if (gd.wasOKed()):
-	## Selecting the ROI over the stack
-	startSlice = int(gd.getNextNumber())
-	endSlice = gd.getNextNumber()
-	width = theImage.getWidth()
-	height = theImage.getHeight()
+	## Gets the user-defined ROIs; user can add in any order to image
+	sliceList = []
+	gd  = NonBlockingGenericDialog("Select freehand ROI, then hit OK when ready to store")
+	gd.showDialog()
+	while gd.wasOKed():
+		roi = theImage.getRoi()
+		if roi is not None:
+			currSlice = theImage.getCurrentSlice()
+			maskImage.setSlice(currSlice)
+			currIp = maskImage.getProcessor()
+			currIp.setRoi(roi)
+			currIp.setColor(255)
+			currIp.fill(currIp.getMask())
+			sliceList.append(currSlice)
+			theImage.setSlice(currSlice+1)
+			
+		gd  = NonBlockingGenericDialog("Select freehand ROI, then hit OK when ready to store")
+		gd.showDialog()
 
-	roiArray = []
-	for i in range(startSlice,endSlice+1):
-		theImage.setSlice(i)
-
-		bp = theImage.getProcessor().duplicate()
-		bp.setColor(0)
-		
-		doStaySlice = True
-		while doStaySlice:
-			waiter = WaitForUserDialog("Draw ROI","Draw ROI, then hit OK")
-			waiter.show()
-
-			roi = theImage.getRoi()
-			if roi is None:
-				doStaySlice = True
+	## Does simple interpolation of the ROIs through the stack
+	if len(sliceList)>0:
+		sliceList.sort(reverse=True)
+		for sl in range(theImage.getNSlices()):
+			if (sl+1) < sliceList[-1]:
+				maskImage.setSliceWithoutUpdate(sliceList[-1])
+				activeIp = maskImage.getProcessor().duplicate()
+			elif (sl+1) > sliceList[0]:
+				maskImage.setSliceWithoutUpdate(sliceList[0])
+				activeIp = maskImage.getProcessor().duplicate()
 			else:
-				doStaySlice = False
-				roiArray.append(roi)
+				isFound = False
+				for mark in sliceList:
+					dist = sl+1 - mark
+					if dist >= 0 and not isFound:
+						isFound = True
+						refSlice = mark
+				maskImage.setSliceWithoutUpdate(refSlice)
+				activeIp = maskImage.getProcessor().duplicate()
+			maskImage.setSliceWithoutUpdate(sl+1)
+			maskImage.setProcessor(activeIp)
 
-	## Applying the ROI to each channel
-	newStacks = []
-	castImages = []
-	for procImage in sourceImages:
-		newStacks.append(ImageStack(width,height))
-		ns = newStacks[-1]
-		for i in range(startSlice,endSlice+1):
-			procImage.setSliceWithoutUpdate(i)
-			bp = procImage.getProcessor().duplicate()
-			bp.fillOutside(roiArray[i-startSlice])
-			ns.addSlice(bp)
-		castImages.append(ImagePlus(procImage.getShortTitle()+"_cast",ns))
+	## Computes the overlay image
+	ic = ImageCalculator()
+	resultImage = ic.run("AND create stack",theImage,maskImage)
+	resultImage.show()
 
-	## Displays the output
-	for castImage in castImages:
-		castImage.show()
-
-	## Cleans up the windows
-	for sourceImage in sourceImages:
-		sourceImage.close()
+	maskImage.close()
